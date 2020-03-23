@@ -1,0 +1,44 @@
+<?php
+/** @var \Mageplaza\GiftCard\Block\Balance $block */
+?>
+<div class="block block-dashboard-info">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('GiftCard Information')) ?></strong></div>
+    <div class="block-content">
+        <div class="box box-information">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Balance')) ?></span>
+            </strong>
+            <div class="box-content">
+                <p>
+                    <?= $block->formatPrice($block->getBalance()) ?><br>
+                </p>
+            </div>
+        </div>
+        <?php if($block->getAllow()==1){ ?>
+            <div class="block newsletter" style="float:right">
+                <strong class="box-title">
+                    <span>Redeem</span>
+                </strong>
+                <div class="content">
+                    <form class="form subscribe" action="<?php echo $block->getActionUrl(); ?>" method="post"">
+                        <input class="input-text required" required="true" name = "code" type="text" placeholder="Enter gift card code" data-validate="{required:true}">
+                        <div class="actions">
+                            <button class="action subscribe primary" title="Redeem" type="submit" aria-label="Redeem">
+                                <span>Redeem</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <?php } ?>
+
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#custom-form": {
+            "validation": {}
+        }
+    }
+</script>

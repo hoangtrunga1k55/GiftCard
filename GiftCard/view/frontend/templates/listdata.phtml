@@ -1,0 +1,39 @@
+
+<?php
+/**
+ * @var \Mageplaza\GiftCard\Block\TestListData $block;
+ */
+$collection = $block->getTestCollection();
+
+?>
+<table class="data table" id="test-data-table">
+    <caption class="table-caption">Vky Test Data</caption>
+    <thead>
+    <tr>
+        <th scope="col" class="col title">Title</th>
+        <th scope="col" class="col author">Author</th>
+        <th scope="col" class="col content">Content</th>
+        <th scope="col" class="col created_at">Created At</th>
+        <th scope="col" class="col actions">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($collection as $key => $data): ?>
+        <tr>
+            <td data-th="Title" class="col title"><?php echo $data->getGiftcard_id(); ?></td>
+            <td data-th="Author" class="col author"><?php echo $data->getCode(); ?></td>
+            <td data-th="Content" class="col content"><?php echo $data->getBalance(); ?></td>
+            <td data-th="Date" class="col created_at"><?php echo $data->getCreate_from(); ?></td>
+            <td data-th="Actions" class="col actions">
+                <select name="forma" onchange="location = this.value;">
+                    <option value="">action</option>
+                    <option value="<?php echo $block->getBaseUrl().'giftcard/index/giftcard'; ?>">Add</option>
+                    <option value="<?php echo $block->getBaseUrl().'giftcard/index/view/id/'.$data->getGiftcard_id(); ?>">Edit</option>
+                    <option value="<?php echo $block->getBaseUrl().'giftcard/index/delete/id/'.$data->getGiftcard_id(); ?>">Delete</option>
+                </select>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+

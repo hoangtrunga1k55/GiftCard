@@ -1,0 +1,146 @@
+<?php
+
+namespace Mageplaza\GiftCard\Setup;
+
+use Magento\Framework\Setup\UpgradeSchemaInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+
+class UpgradeSchema implements UpgradeSchemaInterface
+{
+    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $installer = $setup;
+
+        $installer->startSetup();
+        if (version_compare($context->getVersion(), '1.5.0', '<')) {
+            $table = $installer->getTable('customer_entity');
+            $connection = $setup->getConnection();
+            $connection->addColumn(
+                    'giftcard_balance',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    ['unsigned' => true, 'nullable' => false],
+                    'giftcard_balance'
+                );
+
+//                $table = $installer->getTable('giftcard_history')
+//                ->addColumn(
+//                        'history_id',
+//                        \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+//                        null,
+//                        [
+//                            'identity' => true,
+//                            'primary' => true,
+//                            'nullable' => false,
+//                            'unsigned' => true,
+//                        ],
+//                        'history_id'
+//                    )
+//                    ->addColumn(
+//                        'giftcard_id',
+//                        \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+//                        null,
+//                        ['unsigned' => true, 'nullable' => false, 'index' => true],
+//                        'GiftCard Id'
+//                    )
+//                    ->addColumn(
+//                        'amount',
+//                        \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+//                        null,
+//                        ['nullable'=> false],
+//                        'amount'
+//                    )
+//                    ->addColumn(
+//                        'action',
+//                        \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+//                        255,
+//                        ['nullable'=> false],
+//                        'action'
+//                    )->addColumn(
+//                        'action_time',
+//                        \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+//                        null,
+//                        ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+//                        'action_time'
+//                    )
+//                    ->addColumn(
+//                        'customer_id',
+//                        \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+//                        null,
+//                        ['unsigned' => true, 'nullable' => false, 'index' => true],
+//                        'Customer id'
+//                    )
+//                    ->addForeignKey(
+//                        $installer->getFkName('giftcard_history', 'giftcard_id', 'giftcard_code', 'giftcard_id'),
+//                        'giftcard_id',
+//                        $installer->getTable('giftcard_code'),
+//                        'giftcard_id',
+//                        \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+//                    )
+//                    ->addForeignKey(
+//                        $installer->getFkName('giftcard_history', 'customer_id', 'customer_entity', 'entity_id'),
+//                        'customer_id',
+//                        $installer->getTable('customer_entity'),
+//                        'entity_id',
+//                        \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+//                    );
+            }
+        $installer->endSetup();
+    }
+}
+
+
+//            $table = $installer->getTable('customer_entity');
+//            if ($setup->getConnection()->isTableExists($table) == true){
+//                $columns = [
+//
+//                    'giftcard_balance' => [
+//
+//                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+//
+//                        'nullable' => true,
+//
+//                        'comment' => 'Token Value',
+//
+//                    ],
+//
+//                ];
+//                $connection = $setup->getConnection();
+//
+//                foreach ($columns as $name => $definition) {
+//
+//                    $connection->addColumn($table, $name, $definition);
+//                }
+//            }
+//        }
+//            $table1 = $installer->getTable('giftcard_history');
+//            if ($setup->getConnection()->isTableExists($table1) == true) {
+//                $connection = $setup->getConnection();
+//                $connection->addColumn(
+//                    'customer_id',
+//                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+//                    null,
+//                    ['unsigned' => true, 'nullable' => false, 'index' => true],
+//                    'Customer id'
+//                );
+//                $connection->addForeignKey(
+//                    $installer->getFkName('giftcard_history', 'customer_id', 'customer_entity', 'entity_id'),
+//                    'customer_id',
+//                    $installer->getTable('customer_entity'),
+//                    'entity_id',
+//                    \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+//                );
+//            }
+//            $table = $installer->getTable('customer_entity');
+//            $connection = $setup->getConnection();
+//            $connection->addColumn(
+//                'giftcard_balance',
+//                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+//                null,
+//                ['unsigned' => true, 'nullable' => false],
+//                'giftcard_balance'
+//            );
+
+
+//them du lieu
