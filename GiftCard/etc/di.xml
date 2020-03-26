@@ -18,9 +18,6 @@
         <plugin name="checkcode" type="Mageplaza\GiftCard\Plugin\CheckCode" sortOrder="10" disabled="false"  />
     </type>
 
-    <type name="Mageplaza\GiftCard\Controller\Index\Example">
-        <plugin name="Mageplaza_HelloWorld_Plugin" type="Mageplaza\GiftCard\Plugin\ExamplePlugin" sortOrder="20" disabled="false"  />
-    </type>
 </config>
 
 

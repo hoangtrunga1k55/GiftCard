@@ -21,12 +21,14 @@ class Coupon implements \Magento\Framework\Event\ObserverInterface
     {
         $post = $this->_postFactory->create();
         $code = $this->_checkoutSession->getTestData();
+        $dicount = $this->_checkoutSession->getDicount();
         if($code){
             $post->load($code,'code')->addData(array(
-                'amount_used' =>$post->load($code,'code')->getBalance(),
-                'balance' => 0,
+                'amount_used' => $dicount,
+                'balance' => $post->load($code,'code')->getBalance()-$dicount,
             ))->save();
             $this->_checkoutSession->unsTestData();
+            $this->_checkoutSession->unsDiscount();
         }
     }
 }

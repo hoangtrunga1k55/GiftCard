@@ -1,5 +1,7 @@
 <?php
 namespace Mageplaza\GiftCard\Model\Total\Quote;
+use Magento\Checkout\Model\Cart as CustomerCart;
+
 /**
  * Class Custom
  * @package Mageplaza\HelloWorld\Model\Total\Quote
@@ -37,7 +39,6 @@ class Custom extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         }
     }
 
-
     /**
      * @param \Magento\Quote\Model\Quote $quote
      * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
@@ -52,24 +53,30 @@ class Custom extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     {
         parent::collect($quote, $shippingAssignment, $total);
         $giftcard = $this->_giftCardFactory->create();
-        $collection = $giftcard->getCollection();
         $couponCode = $this->_checkoutSession->getTestData();
-        if($couponCode){
-            $balance =$this->checkCode($collection,$couponCode);
-            $baseDiscount=$balance;
+        $check = $giftcard->load($couponCode,'code');
+        if($check->getGiftcard_id()){
+            $balance =$check->getBalance();
+            if($total->getGrandTotal() - $balance >0){
+                $baseDiscount=$balance;
+            }
+            else{
+                $baseDiscount =$total->getGrandTotal();
+            }
+            $this->_discount = $baseDiscount;
+            $total->setGrandTotal($total->getGrandTotal() - $baseDiscount);
+            $total->setBaseGrandTotal($total->getBaseGrandTotal() - $baseDiscount);
+
+            return $this;
         }else{
+            $this->_discount =0;
             $this->_checkoutSession->unsTestData();
-            $baseDiscount =0;
         }
-        $this->_discount =  $this->_priceCurrency->convert($baseDiscount);
-        $total->addTotalAmount('customer_discount', -$this->_discount);
-        $total->addBaseTotalAmount('customer_discount', -$this->_discount);
-        $total->setBaseGrandTotal($total->getBaseGrandTotal() - $this->_discount);
-        return $this;
     }
 
     public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
     {
+        $this->_checkoutSession->setDicount($this->_discount);
         return [
             'code' => 'custom_discount',
             'title' => 'Gift Card',

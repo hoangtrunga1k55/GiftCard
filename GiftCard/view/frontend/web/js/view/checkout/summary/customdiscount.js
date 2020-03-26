@@ -17,12 +17,17 @@ define(
                 if(price < 0){
                     return true;
                 }
-                return false;
+                else{
+                    return false;
+                }
             },
             getCustomDiscount : function(){
                 var price = totals.getSegment('custom_discount').value;
                 return this.getFormattedPrice(price);
-            }
+            },
         });
     }
 );
+
+
+
